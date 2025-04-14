@@ -11,7 +11,6 @@
 | 기능 | 설명 |
 |------|------|
 | ✅ Thymeleaf | 서버 사이드 템플릿 엔진, HTML에 데이터를 렌더링하기 위한 뷰 |
-| ✅ 메시지 국제화 | `messages.properties`를 통한 다국어 지원 처리 |
 | ✅ 검증 (Validation) | Bean Validation(JSR-380), `@Validated`, `BindingResult` 등 활용 |
 | ✅ 쿠키 | `@CookieValue`, `HttpServletResponse.addCookie()` 등을 이용한 쿠키 처리 |
 | ✅ 세션 | `HttpSession`을 활용한 로그인 상태 유지 및 세션 저장 전략 |
