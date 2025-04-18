@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -166,8 +167,14 @@ public class ValidationItemControllerV2 {
         log.info("objectName={}", bindingResult.getObjectName());
         log.info("target={}", bindingResult.getTarget());
 
+        //ValidationUtils.rejectIfEmptyOrWhitespace(bindingResult,"itemName", "required");
+        //한 줄로 밑에걸 바꿀 수 있음. 근데 이건 Empty와 공백같은 단순한 것만 동작시킬 수 있음.
+
+        //검증
         if (!StringUtils.hasText(item.getItemName())) {
             bindingResult.rejectValue("itemName","required");
+
+            //new String[]{"required.item.itemName", "required"};// 처음엔 required.item.itemName하고 그 다음에 없으면 required 사용
         }
         if (item.getPrice() == null || item.getPrice() < 1000 || item.getPrice() >
                 1000000) {
@@ -184,10 +191,12 @@ public class ValidationItemControllerV2 {
                 bindingResult.reject("totalPriceMin", new Object[]{10000,resultPrice}, null);
             }
         }
+        //검증 실패하면 다시 입력 폼으로
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
             return "validation/v2/addForm";
         }
+
         //성공 로직
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
