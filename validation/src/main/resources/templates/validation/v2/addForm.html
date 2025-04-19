@@ -27,6 +27,7 @@
         <div th:if="${#fields.hasGlobalErrors()}">
             <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
         </div>
+
         <div>
             <label for="itemName" th:text="#{label.item.itemName}">상품명</label>
             <input type="text" id="itemName" th:field="*{itemName}"
@@ -43,6 +44,7 @@
                 가격 오류
             </div>
         </div>
+
         <div>
             <label for="quantity" th:text="#{label.item.quantity}">수량</label>
             <input type="text" id="quantity" th:field="*{quantity}"
@@ -50,6 +52,7 @@
             <div class="field-error" th:errors="*{quantity}">
                 수량 오류
             </div>
+
         </div>
 
         <hr class="my-4">
