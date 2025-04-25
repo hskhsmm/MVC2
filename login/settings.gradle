@@ -1,0 +1,3 @@
+rootProject.name = 'item-service'
+rootProject.name = 'mvc2_prac'
+include 'login'
