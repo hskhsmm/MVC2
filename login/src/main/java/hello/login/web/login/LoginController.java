@@ -2,6 +2,8 @@ package hello.login.web.login;
 
 import hello.login.domain.login.LoginService;
 import hello.login.domain.member.Member;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LoginController {
 
     private final LoginService loginService; // 로그인 비즈니스 로직을 담당하는 서비스 주입
+    private final HttpServletResponse httpServletResponse;
 
     @GetMapping("/login") // 로그인 폼 화면 요청
     public String loginForm(@ModelAttribute("loginForm") LoginForm loginForm) {
@@ -25,7 +28,7 @@ public class LoginController {
     }
 
     @PostMapping("/login") // 로그인 폼 제출(POST) 처리
-    public String login(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult) {
+    public String login(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletResponse response) {
         // 1. form 데이터 검증 (@NotEmpty 같은 애노테이션 확인)
         if (bindingResult.hasErrors()) {
             // 검증 실패 시 로그인 폼 다시 보여줌
@@ -43,7 +46,25 @@ public class LoginController {
             return "login/loginForm";
         }
 
-        // 4. 로그인 성공 처리 (TODO: 세션 처리 추가 예정)
+        // 4. 로그인 성공 처리
+
+        //쿠키에 시간 정보 안주면 세션 쿠키(브라우저 종료 시 모두 종료)
+        Cookie idCookie = new Cookie("memberId", String.valueOf(loginMember.getId())); //값은 회원의 id를 담아둔다.
+        response.addCookie(idCookie);
         return "redirect:/"; // 홈화면으로 리다이렉트
+
+    }
+
+    //5. 로그아웃 기능
+    @PostMapping("/logout")
+    public String logout(HttpServletResponse response) {
+        expireCookie(response, "memberId");
+        return "redirect:/";
+    }
+
+    private static void expireCookie(HttpServletResponse response, String cookieName) {
+        Cookie cookie = new Cookie(cookieName, null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
     }
 }
