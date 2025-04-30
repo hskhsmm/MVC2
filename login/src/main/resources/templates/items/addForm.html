@@ -2,73 +2,117 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <link th:href="@{/css/bootstrap.min.css}"
-          href="../css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <style>
         .container {
             max-width: 560px;
+        }
+        .form-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .field-error {
             border-color: #dc3545;
             color: #dc3545;
         }
+        .form-label {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        .form-control {
+            border-radius: 8px;
+            padding: 0.75rem;
+            border: 1px solid #dee2e6;
+        }
+        .form-control:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        .btn-custom {
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-weight: 500;
+        }
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .error-message {
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        .global-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
-<body>
-
-<div class="container">
-
-    <div class="py-5 text-center">
-        <h2 th:text="#{page.addItem}">상품 등록</h2>
+<body class="bg-light">
+<div class="container py-5">
+    <div class="header-section text-center">
+        <h2 class="display-4 mb-3" th:text="#{page.addItem}">상품 등록</h2>
+        <p class="lead text-muted">새로운 상품을 등록하세요</p>
     </div>
 
-    <form action="item.html" th:action th:object="${item}" method="post">
-
-        <div th:if="${#fields.hasGlobalErrors()}">
-            <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
-        </div>
-
-        <div>
-            <label for="itemName" th:text="#{label.item.itemName}">상품명</label>
-            <input type="text" id="itemName" th:field="*{itemName}"
-                   th:errorclass="field-error" class="form-control" placeholder="이름을 입력하세요">
-            <div class="field-error" th:errors="*{itemName}">
-                상품명 오류
+    <div class="form-section">
+        <form action="item.html" th:action th:object="${item}" method="post">
+            <div th:if="${#fields.hasGlobalErrors()}" class="global-error">
+                <p class="mb-0" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
             </div>
-        </div>
-        <div>
-            <label for="price" th:text="#{label.item.price}">가격</label>
-            <input type="text" id="price" th:field="*{price}"
-                   th:errorclass="field-error" class="form-control" placeholder="가격을 입력하세요">
-            <div class="field-error" th:errors="*{price}">
-                가격 오류
-            </div>
-        </div>
-        <div>
-            <label for="quantity" th:text="#{label.item.quantity}">수량</label>
-            <input type="text" id="quantity" th:field="*{quantity}"
-                   th:errorclass="field-error" class="form-control" placeholder="수량을 입력하세요">
-            <div class="field-error" th:errors="*{quantity}">
-                수량 오류
-            </div>
-        </div>
 
-        <hr class="my-4">
-
-        <div class="row">
-            <div class="col">
-                <button class="w-100 btn btn-primary btn-lg" type="submit" th:text="#{button.save}">저장</button>
+            <div class="mb-3">
+                <label for="itemName" class="form-label" th:text="#{label.item.itemName}">상품명</label>
+                <input type="text" id="itemName" th:field="*{itemName}"
+                       th:errorclass="field-error" class="form-control" placeholder="이름을 입력하세요">
+                <div class="field-error error-message" th:errors="*{itemName}">
+                    상품명 오류
+                </div>
             </div>
-            <div class="col">
-                <button class="w-100 btn btn-secondary btn-lg"
-                        onclick="location.href='items.html'"
-                        th:onclick="|location.href='@{/items}'|"
-                        type="button" th:text="#{button.cancel}">취소</button>
+            <div class="mb-3">
+                <label for="price" class="form-label" th:text="#{label.item.price}">가격</label>
+                <input type="text" id="price" th:field="*{price}"
+                       th:errorclass="field-error" class="form-control" placeholder="가격을 입력하세요">
+                <div class="field-error error-message" th:errors="*{price}">
+                    가격 오류
+                </div>
             </div>
-        </div>
+            <div class="mb-4">
+                <label for="quantity" class="form-label" th:text="#{label.item.quantity}">수량</label>
+                <input type="text" id="quantity" th:field="*{quantity}"
+                       th:errorclass="field-error" class="form-control" placeholder="수량을 입력하세요">
+                <div class="field-error error-message" th:errors="*{quantity}">
+                    수량 오류
+                </div>
+            </div>
 
-    </form>
-
-</div> <!-- /container -->
+            <div class="row g-3">
+                <div class="col">
+                    <button class="w-100 btn btn-primary btn-custom" type="submit" th:text="#{button.save}">저장</button>
+                </div>
+                <div class="col">
+                    <button class="w-100 btn btn-outline-secondary btn-custom"
+                            onclick="location.href='items.html'"
+                            th:onclick="|location.href='@{/items}'|"
+                            type="button" th:text="#{button.cancel}">취소</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 </body>
 </html>

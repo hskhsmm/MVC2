@@ -2,78 +2,93 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <!-- 부트스트랩 CSS 연결 (Thymeleaf 경로 사용) -->
-    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <style>
-        /* 전체 컨테이너 최대 너비 설정 */
         .container {
             max-width: 560px;
         }
-        /* 에러가 발생한 입력창 스타일 */
+        .form-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
         .field-error {
-            border-color: #dc3545; /* 테두리 빨간색 */
-            color: #dc3545; /* 글자 빨간색 */
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        .form-control {
+            border-radius: 8px;
+            padding: 0.75rem;
+            border: 1px solid #dee2e6;
+        }
+        .form-control:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        .btn-custom {
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-weight: 500;
+        }
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .error-message {
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
         }
     </style>
 </head>
-<body>
-<div class="container">
-    <!-- 페이지 상단 제목 부분 -->
-    <div class="py-5 text-center">
-        <h2>회원 가입</h2>
+<body class="bg-light">
+<div class="container py-5">
+    <div class="form-section">
+        <div class="text-center mb-4">
+            <h2 class="display-4">회원 가입</h2>
+            <p class="lead text-muted">새로운 계정을 만들어보세요</p>
+        </div>
+
+        <form th:action="@{/members/add}" th:object="${member}" method="post">
+            <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                <p class="mb-0" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
+            </div>
+
+            <div class="mb-3">
+                <label for="loginId" class="form-label">로그인 ID</label>
+                <input type="text" id="loginId" th:field="*{loginId}" class="form-control" th:errorclass="field-error">
+                <div class="field-error error-message" th:errors="*{loginId}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">비밀번호</label>
+                <input type="password" id="password" th:field="*{password}" class="form-control" th:errorclass="field-error">
+                <div class="field-error error-message" th:errors="*{password}"></div>
+            </div>
+
+            <div class="mb-4">
+                <label for="name" class="form-label">이름</label>
+                <input type="text" id="name" th:field="*{name}" class="form-control" th:errorclass="field-error">
+                <div class="field-error error-message" th:errors="*{name}"></div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col">
+                    <button class="w-100 btn btn-primary btn-custom" type="submit">회원 가입</button>
+                </div>
+                <div class="col">
+                    <a class="w-100 btn btn-outline-secondary btn-custom" th:href="@{/}" role="button">취소</a>
+                </div>
+            </div>
+        </form>
     </div>
-
-    <!-- 소제목 -->
-    <h4 class="mb-3">회원 정보 입력</h4>
-
-    <!-- 회원 가입 Form 시작 -->
-    <form th:action="@{/members/add}" th:object="${member}" method="post">
-
-        <!-- 전체(Global) 오류 메시지가 있을 경우 출력 -->
-        <div th:if="${#fields.hasGlobalErrors()}">
-            <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
-        </div>
-
-        <!-- 로그인 ID 입력창 -->
-        <div>
-            <label for="loginId">로그인 ID</label>
-            <input type="text" id="loginId" th:field="*{loginId}" class="form-control" th:errorclass="field-error">
-            <!-- 로그인 ID에 에러 발생 시 에러 메시지 출력 -->
-            <div class="field-error" th:errors="*{loginId}"></div>
-        </div>
-
-        <!-- 비밀번호 입력창 -->
-        <div>
-            <label for="password">비밀번호</label>
-            <input type="password" id="password" th:field="*{password}" class="form-control" th:errorclass="field-error">
-            <!-- 비밀번호에 에러 발생 시 에러 메시지 출력 -->
-            <div class="field-error" th:errors="*{password}"></div>
-        </div>
-
-        <!-- 이름 입력창 -->
-        <div>
-            <label for="name">이름</label>
-            <input type="text" id="name" th:field="*{name}" class="form-control" th:errorclass="field-error">
-            <!-- 이름에 에러 발생 시 에러 메시지 출력 -->
-            <div class="field-error" th:errors="*{name}"></div>
-        </div>
-
-        <hr class="my-4">
-
-        <!-- 버튼들을 가로로 배치하는 행(row) -->
-        <div class="row">
-            <!-- 회원 가입 버튼 (form 안에 있으므로 submit 기능) -->
-            <div class="col">
-                <button class="w-100 btn btn-primary btn-lg" type="submit">회원 가입</button>
-            </div>
-            <!-- 취소 버튼 (form 밖으로 빠지지 않고 a태그로 이동만 함) -->
-            <div class="col">
-                <a class="w-100 btn btn-secondary btn-lg" th:href="@{/}" role="button">취소</a>
-            </div>
-        </div>
-
-    </form>
-    <!-- 회원 가입 Form 끝 -->
-</div> <!-- /container -->
+</div>
 </body>
 </html>

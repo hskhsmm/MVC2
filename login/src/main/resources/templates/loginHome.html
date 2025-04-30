@@ -2,36 +2,54 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        .user-section {
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-custom {
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            padding: 1rem;
+            font-weight: 500;
+        }
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .user-name {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+    </style>
 </head>
-<body>
-
-<div class="container" style="max-width: 600px">
-    <div class="py-5 text-center">
-        <h2>홈 화면</h2>
+<body class="bg-light">
+<div class="container py-5" style="max-width: 600px">
+    <div class="user-section">
+        <h2 class="display-4 mb-4">환영합니다</h2>
+        <h4 class="user-name" th:text="|${member.name}님|">사용자 이름</h4>
     </div>
 
-    <h4 class="mb-3" th:text="|로그인: ${member.name}|">로그인 사용자 이름</h4>
-    <hr class="my-4">
-
-    <div class="row">
+    <div class="row g-4">
         <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg" type="button"
+            <button class="w-100 btn btn-primary btn-custom" type="button"
                     th:onclick="|location.href='@{/items}'|">
                 상품 관리
             </button>
         </div>
         <div class="col">
             <form th:action="@{/logout}" method="post">
-                <button class="w-100 btn btn-dark btn-lg" type="submit">
+                <button class="w-100 btn btn-outline-danger btn-custom" type="submit">
                     로그아웃
                 </button>
             </form>
         </div>
     </div>
-
-    <hr class="my-4">
-</div> <!-- /container -->
-
+</div>
 </body>
 </html>
