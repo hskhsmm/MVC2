@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/item-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/item-service.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mvc2_prac.main.iml" filepath="$PROJECT_DIR$/.idea/modules/mvc2_prac.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/mvc_2편_실습.iml" filepath="$PROJECT_DIR$/.idea/mvc_2편_실습.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/thymeleaf-basic.main.iml" filepath="$PROJECT_DIR$/.idea/modules/thymeleaf-basic.main.iml" />
     </modules>
   </component>
 </project>
