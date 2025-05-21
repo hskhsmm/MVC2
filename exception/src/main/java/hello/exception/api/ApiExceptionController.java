@@ -17,7 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 public class ApiExceptionController {
     @GetMapping("/api/members/{id}")
-    public MemberDTO getMember(@PathVariable("id") String id) {
+    public MemberDto getMember(@PathVariable("id") String id) {
 
         if(id.equals("ex")) {
             throw new RuntimeException("잘못된 사용자");
@@ -29,7 +29,7 @@ public class ApiExceptionController {
             throw new UserException("사용자 오류");
         }
 
-        return new MemberDTO(id, "hello " + id);
+        return new MemberDto(id, "hello " + id);
     }
 
     @GetMapping("/api/response-status-ex1")
@@ -48,11 +48,9 @@ public class ApiExceptionController {
     }
 
 
-
-
     @Data
     @AllArgsConstructor
-    static class MemberDTO {
+    static class MemberDto {
         private String memberId;
         private String Name;
 
